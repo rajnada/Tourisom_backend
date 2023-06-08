@@ -2,12 +2,14 @@
 // Import required packages
 const express = require('express');
 const mongoose = require('mongoose');
+const { MongoUrl } = require('./config');
+
 
 // Create Express app
 const app = express();
 
 // Connect to MongoDB
-mongoose.connect('mongodb+srv://Dev:geekiest@cluster0.h3dw1lo.mongodb.net/', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(MongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log('Connected to MongoDB');
   })
