@@ -1,3 +1,4 @@
+//Server File
 // Import required packages
 const express = require('express');
 const mongoose = require('mongoose');
