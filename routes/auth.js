@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../model/User");
+// const User = require("../model/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { registerValidation, loginValidation } = require("../validation");
+// const { registerValidation, loginValidation } = require("../validation");
+
+//Register URL
 router.post("/register", async (req, res) => {
   const { error } = registerValidation(req.body);
   // console.log(req.body);
@@ -35,6 +37,8 @@ router.post("/register", async (req, res) => {
   }
 });
 
+
+//Login Route
 router.post("/login", async (req, res) => {
   const { error } = loginValidation(req.body);
   if (error) {
