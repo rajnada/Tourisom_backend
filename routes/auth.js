@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
-// const User = require("../model/User");
+const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-// const { registerValidation, loginValidation } = require("../validation");
+const { registerValidation, loginValidation } = require("../validation");
+const { secretOrKey } = require("../config");
 
 //Register URL
 router.post("/register", async (req, res) => {
@@ -60,7 +61,7 @@ router.post("/login", async (req, res) => {
   }
 
   // create token
-  const token = jwt.sign({ _id: isUserExist._id }, process.env.SECRET_KEY);
+  const token = jwt.sign({ _id: isUserExist._id }, secretOrKey);
   res.header("auth-token", token).send({ token, user: isUserExist });
 });
 module.exports = router;
