@@ -1,43 +1,27 @@
-//Server File
-// Import required packages
-const express = require('express');
-const mongoose = require('mongoose');
-const { MongoUrl } = require('./config');
-
-
-// Create Express app
+const express = require("express");
+const PORT = process.env.PORT || 5000;
 const app = express();
+require("./db");
+const authRoute = require("./routes/auth");
+const path = require("path");
 
-// Connect to MongoDB
-mongoose.connect(MongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => {
-    console.log('Connected to MongoDB');
-  })
-  .catch((error) => {
-    console.error('Error connecting to MongoDB:', error);
-  });
+/************ MIDDLEVARES *************/
 
-// Define a schema for the example collection
-const exampleSchema = new mongoose.Schema({
-  name: String,
-  age: Number,
+// Body parser middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Add headers in order to perform all operation on API
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Header", "*");
+
+  next();
 });
 
-// Define a model for the example collection
-const Example = mongoose.model('Example', exampleSchema);
+/************ ROUTES *************/
+app.use("/api/v1/user", authRoute);
 
-// Define a route handler for GET requests to fetch all examples
-app.get('/examples', async (req, res) => {
-  try {
-    const examples = await Example.find();
-    res.json(examples);
-  } catch (error) {
-    console.error('Error fetching examples:', error);
-    res.status(500).send('Error fetching examples');
-  }
-});
 
-// Start the server
-app.listen(5000, () => {
-  console.log('Server listening on port 5000');
-});
+// listen to the port
+app.listen(PORT);
